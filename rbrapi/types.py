@@ -1,6 +1,5 @@
-from json import loads, dumps
-
-from typing import TypedDict, Dict, List
+from json import dumps, loads
+from typing import Dict, List, TypedDict
 
 
 class APIResponse:
@@ -81,7 +80,10 @@ class AccountResponse(APIResponse):
 
     def __init__(self, user: UserResponse, wallet: str, email: str, custom_id: str):
         super().__init__(
-            user=user, wallet=loads(wallet), email=email, custom_id=custom_id
+            user=user,
+            wallet=loads(wallet),
+            email=email,
+            custom_id=custom_id,
         )
 
 

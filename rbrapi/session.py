@@ -1,9 +1,8 @@
-import requests
-from threading import local
 from datetime import datetime
+from threading import local
+from typing import Any, Dict, Optional
 
-from typing import Optional, Dict, Any
-
+import requests
 
 # Session time-to-live in seconds
 SESSION_TIME_TO_LIVE = 600
@@ -42,11 +41,19 @@ def make_request(
 
     if method == "POST":
         response = session.post(
-            url, timeout=timeout, headers=headers, json=json, data=data
+            url,
+            timeout=timeout,
+            headers=headers,
+            json=json,
+            data=data,
         )
     else:
         response = session.get(
-            url, timeout=timeout, headers=headers, json=json, data=data
+            url,
+            timeout=timeout,
+            headers=headers,
+            json=json,
+            data=data,
         )
 
     if error_if_not_ok:

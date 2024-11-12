@@ -1,23 +1,23 @@
 __version__ = "0.5"
 
-from uuid import uuid4
-from typing import Optional
 from json import loads
+from typing import Optional
+from uuid import uuid4
 
-from .session import make_request
-from .types import (
-    AuthenticateResponse,
-    AccountResponse,
-    SignUpResponse,
-    LootBoxResponses,
-)
 from .errors import (
     AuthenticationError,
-    SignUpError,
     CollectTimedBonusError,
     FriendRequestError,
     LootBoxError,
+    SignUpError,
     userNotExistError,
+)
+from .session import make_request
+from .types import (
+    AccountResponse,
+    AuthenticateResponse,
+    LootBoxResponses,
+    SignUpResponse,
 )
 
 CLIENT_VERSION = "61"
@@ -34,22 +34,20 @@ BASE_HEADERS = {
 
 class RocketBotRoyale:
     def __init__(self, email: str = None, password: str = None) -> None:
-        """
-        Initialize RocketBotRoyale instance with email and password.
+        """Initialize RocketBotRoyale instance with email and password.
 
         Args:
             email (str): The account email.
             password (str): The account password.
-        """
 
+        """
         self.email = email
         self.password = password
         self.token: Optional[str] = None
         self.authenticate()
 
     def authenticate(self, timeout: int = None) -> "AuthenticateResponse":
-        """
-        Authenticate the user.
+        """Authenticate the user.
 
         Args:
             timeout (int, optional): Timeout for the request in seconds.
@@ -59,6 +57,7 @@ class RocketBotRoyale:
 
         Raises:
             AuthenticationError: If authentication fails.
+
         """
         data = {
             "email": self.email,
@@ -80,8 +79,7 @@ class RocketBotRoyale:
         return response_data
 
     def account(self, timeout: int = None) -> "AccountResponse":
-        """
-        Retrieve account details for the authenticated user.
+        """Retrieve account details for the authenticated user.
 
         Args:
             timeout (int, optional): Timeout for the request in seconds.
@@ -91,6 +89,7 @@ class RocketBotRoyale:
 
         Raises:
             AuthenticationError: If authentication token is missing or invalid.
+
         """
         if not self.token:
             raise AuthenticationError("Token not found or user is unauthenticated")
@@ -105,8 +104,7 @@ class RocketBotRoyale:
         return AccountResponse.from_dict(response)
 
     def collect_timed_bonus(self, timeout: int = None) -> bool:
-        """
-        Collect timed bonus.
+        """Collect timed bonus.
 
         Args:
             timeout (int, optional): Timeout for the request in seconds.
@@ -117,6 +115,7 @@ class RocketBotRoyale:
         Raises:
             AuthenticationError: If authentication token is missing or invalid.
             CollectTimedBonusError: If collecting timed bonus fails.
+
         """
         if not self.token:
             raise AuthenticationError("Token not found or user is unauthenticated")
@@ -137,8 +136,7 @@ class RocketBotRoyale:
         return True
 
     def send_friend_request(self, friend_code: str, timeout: int = None) -> bool:
-        """
-        Send a friend request.
+        """Send a friend request.
 
         Args:
             friend_code (str): The friend code of the user to send the friend request to.
@@ -150,6 +148,7 @@ class RocketBotRoyale:
         Raises:
             AuthenticationError: If authentication token is missing or invalid.
             FriendRequestError: If sending the friend request fails.
+
         """
         if not self.token:
             raise AuthenticationError("Token not found or user is unauthenticated")
@@ -170,8 +169,7 @@ class RocketBotRoyale:
         return True
 
     def buy_crate(self, elite: bool = False, timeout: int = None) -> "LootBoxResponses":
-        """
-        Purchase a crate.
+        """Purchase a crate.
 
         Args:
             elite (bool, optional): Indicates if the crate to be bought is elite. Defaults to False.
@@ -183,6 +181,7 @@ class RocketBotRoyale:
         Raises:
             AuthenticationError: If authentication token is missing or invalid.
             LootBoxError: If purchasing the crate fails.
+
         """
         if not self.token:
             raise AuthenticationError("Token not found or user is unauthenticated")
@@ -211,8 +210,7 @@ class RocketBotRoyale:
         raise LootBoxError(response.get("message", "Unable to buy crate"))
 
     def friend_code_to_id(self, friend_code: str, timeout: int = None) -> str:
-        """
-        Convert a friend code to a user ID.
+        """Convert a friend code to a user ID.
 
         Args:
             friend_code (str): The friend code to be converted to a user ID.
@@ -224,8 +222,8 @@ class RocketBotRoyale:
         Raises:
             AuthenticationError: If authentication token is missing or invalid.
             userNotExistError: If the user with the given friend code does not exist or if the request fails.
-        """
 
+        """
         if not self.token:
             raise AuthenticationError("Token not found or user is unauthenticated")
 
@@ -254,8 +252,7 @@ class RocketBotRoyale:
 
     @staticmethod
     def signup(email: str, password: str, username: str, timeout=None) -> bool:
-        """
-        Sign up a new user.
+        """Sign up a new user.
 
         Args:
             email (str): New account email.
@@ -268,6 +265,7 @@ class RocketBotRoyale:
 
         Raises:
             SignUpError: If signup fails.
+
         """
         data = (
             '"{\\"display_name\\":\\"'
