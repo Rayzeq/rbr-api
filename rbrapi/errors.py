@@ -18,5 +18,5 @@ class LootBoxError(Exception):
     """Exception raised for errors in purchasing a loot box."""
 
 
-class userNotExistError(Exception):
+class UnknownUserError(Exception):
     """Exception raised for errors in sending a query to find a user."""
