@@ -81,7 +81,12 @@ class AccountResponse(APIResponse):
     custom_id: str
 
     def __init__(
-        self, *, user: UserResponse, wallet: str, email: str, custom_id: str,
+        self,
+        *,
+        user: UserResponse,
+        wallet: str,
+        email: str,
+        custom_id: str,
     ) -> None:
         super().__init__(
             user=user,

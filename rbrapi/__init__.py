@@ -251,7 +251,11 @@ class RocketBotRoyale:
 
     @staticmethod
     def signup(
-        email: str, password: str, username: str, *, timeout: int | None = None,
+        email: str,
+        password: str,
+        username: str,
+        *,
+        timeout: int | None = None,
     ) -> bool:
         """Sign up a new user.
 
@@ -268,15 +272,7 @@ class RocketBotRoyale:
             SignUpError: If signup fails.
 
         """
-        data = 
-            '"{\\"display_name\\":\\"'
-            + username
-            + '\\",\\"email\\":\\"'
-            + email
-            + '\\",\\"password\\":\\"'
-            + password
-            + '\\"}"'
-        
+        data = f'"{{"display_name":"{username}","email":"{email}","password":"{password}"}}"'
 
         temp_account = RocketBotRoyale.__custom_account()
         make_request(
@@ -294,7 +290,7 @@ class RocketBotRoyale:
         return True
 
     @staticmethod
-    def __custom_account(timeout=None) -> SignUpResponse:
+    def __custom_account(*, timeout: int | None = None) -> SignUpResponse:
         data = {
             "id": f"{uuid4()}",
             "vars": {"client_version": CLIENT_VERSION, "platform": "HTML5"},
