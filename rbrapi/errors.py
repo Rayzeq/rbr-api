@@ -1,35 +1,41 @@
+from __future__ import annotations
+
+from typing import Any, ClassVar
+
+
 class APIError(Exception):
-    code: int
+    code: ClassVar[int]
+    CODES: ClassVar[dict[int, type[APIError]]] = {}
+
+    def __init_subclass__(cls, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+        APIError.CODES[cls.code] = cls
+
+    @classmethod
+    def from_code(cls, code: int, message: str) -> APIError:
+        if klass := cls.CODES.get(code):
+            return klass(message)
+
+        print(f"NEW ERROR CODE: {code} {message}")
+        return cls(message)
+
     message: str
 
-    def __init__(self, code: int, message: str) -> None:
-        super().__init__(code, message)
-        self.code = code
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
         self.message = message
 
     def __str__(self) -> str:
         return self.message
 
 
-class AuthenticationError(APIError):
-    """Exception raised for errors in the authentication process."""
+class PasswordTooShortError(APIError):
+    """The provided password was too short."""
+
+    code = 3
 
 
-class SignUpError(APIError):
-    """Exception raised for errors during the sign-up process."""
+class InvalidCredentialsError(APIError):
+    """A wrong email/password combo was entered."""
 
-
-class CollectTimedBonusError(APIError):
-    """Exception raised for errors in collecting the timed bonus."""
-
-
-class FriendRequestError(APIError):
-    """Exception raised for errors in sending a friend request."""
-
-
-class LootBoxError(APIError):
-    """Exception raised for errors in purchasing a loot box."""
-
-
-class UnknownUserError(APIError):
-    """Exception raised for errors in sending a query to find a user."""
+    code = 16

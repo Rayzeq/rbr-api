@@ -5,14 +5,6 @@ __version__ = "0.5"
 from json import loads
 from uuid import uuid4
 
-from .errors import (
-    AuthenticationError,
-    CollectTimedBonusError,
-    FriendRequestError,
-    LootBoxError,
-    SignUpError,
-    UnknownUserError,
-)
 from .session import make_request
 from .types import (
     AccountResponse,
@@ -74,7 +66,6 @@ class RocketBotRoyale:
             headers=BASE_HEADERS,
             json=data,
             timeout=timeout,
-            error_if_not_ok=AuthenticationError,
         )
 
         response_data = AuthenticateResponse.from_dict(response)
@@ -127,7 +118,6 @@ class RocketBotRoyale:
                 "content-type": "application/x-www-form-urlencoded",
             },
             data=data,
-            error_if_not_ok=CollectTimedBonusError,
             timeout=timeout,
         )
 
@@ -162,7 +152,6 @@ class RocketBotRoyale:
                 "content-type": "application/x-www-form-urlencoded",
             },
             data=data,
-            error_if_not_ok=FriendRequestError,
             timeout=timeout,
         )
 
@@ -197,7 +186,6 @@ class RocketBotRoyale:
                 "content-type": "application/json",
             },
             data=data,
-            error_if_not_ok=LootBoxError,
             timeout=timeout,
         )
 
@@ -209,7 +197,7 @@ class RocketBotRoyale:
         if payload:
             return LootBoxResponses.from_dict(payload)
 
-        raise LootBoxError(response.get("message", "Unable to buy crate"))
+        raise RuntimeError(response.get("message", "Unable to buy crate"))
 
     def friend_code_to_id(self, friend_code: str, *, timeout: int | None = None) -> str:
         """Convert a friend code to a user ID.
@@ -235,7 +223,6 @@ class RocketBotRoyale:
                 "content-type": "application/json",
             },
             data=data,
-            error_if_not_ok=UnknownUserError,
             timeout=timeout,
         )
 
@@ -247,7 +234,7 @@ class RocketBotRoyale:
         if payload and payload.get("user_id"):
             return payload.get("user_id")
 
-        raise UnknownUserError(response.get("message", "Unable to get user id"))
+        raise RuntimeError(response.get("message", "Unable to get user id"))
 
     @staticmethod
     def signup(
@@ -283,7 +270,6 @@ class RocketBotRoyale:
                 "content-type": "application/x-www-form-urlencoded",
             },
             data=data,
-            error_if_not_ok=SignUpError,
             timeout=timeout,
         )
 
@@ -300,7 +286,6 @@ class RocketBotRoyale:
             f"{BASE_URL}/account/authenticate/custom?create=true&",
             headers=BASE_HEADERS,
             json=data,
-            error_if_not_ok=AuthenticationError,
             timeout=timeout,
         )
 
