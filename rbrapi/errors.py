@@ -30,12 +30,31 @@ class APIError(Exception):
 
 
 class PasswordTooShortError(APIError):
-    """The provided password was too short."""
+    """The password was too short.
+
+    The message can be:
+      - Password must be at least 8 characters long.
+    """
 
     code = 3
 
 
-class InvalidCredentialsError(APIError):
-    """A wrong email/password combo was entered."""
+class BonusNotUnlockedError(APIError):
+    """The bonus is not available yet.
+
+    The message can be:
+      - Bonus is not unlocked yet.
+    """
+
+    code = 13
+
+
+class AuthenticationError(APIError):
+    """There was an error while authenticating.
+
+    The message can be:
+      - Invalid credentials.
+      - Auth token invalid
+    """
 
     code = 16
