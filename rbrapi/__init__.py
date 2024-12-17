@@ -21,7 +21,7 @@ from .types import (
     SignUpResponse,
 )
 
-CLIENT_VERSION = "61"
+CLIENT_VERSION = "69"
 BASE_URL = "https://dev-nakama.winterpixel.io/v2"
 BASE_HEADERS = {
     "accept": "application/json",
