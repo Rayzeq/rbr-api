@@ -2,9 +2,12 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from threading import local
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import requests
+
+if TYPE_CHECKING:
+    from .errors import APIError
 
 # Session time-to-live in seconds
 SESSION_TIME_TO_LIVE = 600
@@ -37,7 +40,7 @@ def make_request(
     data: str | None = None,
     timeout: int | None = None,
     method: str = "POST",
-    error_if_not_ok: type[Exception] | None = None,
+    error_if_not_ok: type[APIError] | None = None,
 ) -> dict[str, Any]:
     session = get_session()
 
@@ -59,6 +62,7 @@ def make_request(
         )
 
     if error_if_not_ok and not response.ok:
-        raise error_if_not_ok(response.json().get("message", "Unkown"))
+        response = response.json()
+        raise error_if_not_ok(response["code"], response["message"])
 
     return response.json()
