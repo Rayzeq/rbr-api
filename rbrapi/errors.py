@@ -44,6 +44,7 @@ class BonusNotUnlockedError(APIError):
 
     The message can be:
       - Bonus is not unlocked yet.
+      - [client_version] 69 < 70
     """
 
     code = 13
