@@ -59,8 +59,11 @@ def make_request(
             data=data,
         )
 
-    if not response.ok:
-        response = response.json()
-        raise APIError.from_code(response["code"], response["message"])
+    try:
+        if not response.ok:
+            response = response.json()
+            raise APIError.from_code(response["code"], response["message"])
 
-    return response.json()
+        return response.json()
+    except requests.exceptions.JSONDecodeError:
+        raise APIError(response.text)
