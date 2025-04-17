@@ -66,4 +66,4 @@ def make_request(
 
         return response.json()
     except requests.exceptions.JSONDecodeError:
-        raise APIError(response.text)
+        raise APIError(response.text) from None
